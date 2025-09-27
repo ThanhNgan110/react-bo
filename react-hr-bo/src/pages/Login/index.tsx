@@ -1,0 +1,166 @@
+import { useForm } from 'react-hook-form'
+
+import { Link } from 'react-router-dom'
+
+// components
+import Button from '../../components/atoms/Button'
+import { GoogleIcon, XIcon } from '../../components/atoms/Icon'
+import Input from '../../components/atoms/Input'
+import Label from '../../components/atoms/Label'
+
+const Login = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm()
+  const onSubmit = (data) => console.log(data)
+
+  return (
+    <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
+      <div className="relative flex flex-col justify-center w-full h-screen lg:flex-row dark:bg-gray-900 sm:p-0">
+        <div className="flex flex-col flex-1">
+          <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
+            <div>
+              <div className="mb-5 sm:mb-8">
+                <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
+                  Login
+                </h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Enter your email and password to login!
+                </p>
+              </div>
+              <div>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
+                  <Button
+                    className="flex gap-3 justify-center"
+                    type="button"
+                    variant="secondary"
+                    icon={GoogleIcon}
+                  >
+                    Sign in with Google
+                  </Button>
+                  <Button
+                    className="flex gap-3 justify-center"
+                    type="button"
+                    variant="secondary"
+                    icon={XIcon}
+                  >
+                    Sign in with X
+                  </Button>
+                </div>
+                <div className="relative py-3 sm:py-5">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="p-2 text-gray-400 bg-white dark:bg-gray-900 sm:px-5 sm:py-2">
+                      Or
+                    </span>
+                  </div>
+                </div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="space-y-6">
+                    <div>
+                      <Label htmlFor="email">
+                        Email <span className="text-error-500">*</span>{' '}
+                      </Label>
+                      <Input
+                        placeholder="info@gmail.com"
+                        {...register('email', { required: true })}
+                        aria-invalid={errors.firstName ? 'true' : 'false'}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="password">
+                        Password <span className="text-error-500">*</span>{' '}
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          type="text"
+                          placeholder="Enter your password"
+                          {...register('password', {
+                            required: 'Password is required',
+                          })}
+                        />
+                        <span
+                          // onClick={() => setShowPassword(!showPassword)}
+                          className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                        >
+                          {/* {showPassword ? (
+                            <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                          ) : (
+                            <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                          )} */}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        {/* <CheckboxField
+                          checked={isChecked}
+                          onChange={setIsChecked}
+                        /> */}
+                        <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
+                          Keep me logged in
+                        </span>
+                      </div>
+                      <Link
+                        to="/"
+                        className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                      >
+                        Forgot password?
+                      </Link>
+                    </div>
+                    <div className="text-center">
+                      <Button className="w-full" sizes="sm" type="submit">
+                        Sign in
+                      </Button>
+                    </div>
+                  </div>
+                </form>
+
+                <div className="mt-5">
+                  <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
+                    Don&apos;t have an account? {''}
+                    <Link
+                      to={''}
+                      className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                    >
+                      Register
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="items-center hidden w-full h-full lg:w-1/2 bg-brand-950 dark:bg-white/5 lg:grid">
+          <div className="relative flex items-center justify-center z-1">
+            <div className="absolute right-0 top-0 -z-1 w-full max-w-[250px] xl:max-w-[450px]">
+              <img src="/src/images/shape/grid-01.svg" alt="grid" />
+            </div>
+            <div className="absolute bottom-0 left-0 -z-1 w-full max-w-[250px] rotate-180 xl:max-w-[450px]">
+              <img src="src/images/shape/grid-01.svg" alt="grid" />
+            </div>
+            <div className="flex flex-col items-center max-w-xs">
+              <Link to="src/images/logo/auth-logo.svg" className="block mb-4">
+                <img
+                  width={231}
+                  height={48}
+                  src="src/images/logo/auth-logo.svg"
+                  alt="Logo"
+                />
+              </Link>
+              <p className="text-center text-gray-400 dark:text-white/60">
+                Free and Open-Source Tailwind CSS Admin Dashboard Template
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Login
