@@ -5,7 +5,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode
   sizes?: 'sm' | 'md'
   variant?: 'primary' | 'outlined' | 'secondary'
-  icon?: React.FC<React.SVGProps<SVGAElement>>
+  icon?: React.FC<React.SVGProps<SVGSVGElement>>
   onClick?: () => void
   disabled?: boolean
 }
@@ -34,7 +34,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`inline-flex transition cursor-pointer ${VariantsClass[variant]} ${SizesClass[sizes]} ${className} ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
+      className={`transition cursor-pointer ${VariantsClass[variant]} ${SizesClass[sizes]} ${className} ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
       type={type}
       onClick={onClick}
       {...rest}
