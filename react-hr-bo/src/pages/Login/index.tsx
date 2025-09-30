@@ -138,13 +138,13 @@ const Login = () => {
         <div className="items-center hidden w-full h-full lg:w-1/2 bg-brand-950 dark:bg-white/5 lg:grid">
           <div className="relative flex items-center justify-center z-1">
             <div className="absolute right-0 top-0 -z-1 w-full max-w-[250px] xl:max-w-[450px]">
-              <img src="/src/images/shape/grid-01.svg" alt="grid" />
+              <img src="/assets/images/shape/grid-01.svg" alt="grid" />
             </div>
             <div className="absolute bottom-0 left-0 -z-1 w-full max-w-[250px] rotate-180 xl:max-w-[450px]">
-              <img src="src/images/shape/grid-01.svg" alt="grid" />
+              <img src="/assets/images/shape/grid-01.svg" alt="grid" />
             </div>
             <div className="flex flex-col items-center max-w-xs">
-              <Link to="src/images/logo/auth-logo.svg" className="block mb-4">
+              <Link to="/assets/images/logo/auth-logo.svg" className="block mb-4">
                 <img
                   width={231}
                   height={48}
