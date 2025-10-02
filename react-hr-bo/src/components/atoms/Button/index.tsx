@@ -5,7 +5,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode
   sizes?: 'sm' | 'md'
   variant?: 'primary' | 'outlined' | 'secondary'
-  icon?: React.FC<React.SVGProps<SVGSVGElement>>
+  icon?: React.FC<React.SVGProps<SVGSVGElement>> | React.ReactNode
   onClick?: () => void
   disabled?: boolean
 }
@@ -39,11 +39,12 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       {...rest}
     >
-      {IconComponent && (
-        <span>
+      {IconComponent &&
+        (typeof IconComponent === 'function' ? (
           <IconComponent />
-        </span>
-      )}
+        ) : (
+          <span>{IconComponent}</span>
+        ))}
       {children}
     </button>
   )
