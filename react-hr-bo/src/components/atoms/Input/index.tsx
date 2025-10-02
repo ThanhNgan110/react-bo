@@ -1,32 +1,38 @@
-import React from 'react'
+import { type InputHTMLAttributes } from 'react'
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
+  classNameInput?: string
   prefixElement?: React.ReactNode
   suffixElement?: React.ReactNode
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
 }
 
 const Input = ({
   className = '',
-  prefixElement = null,
-  suffixElement = null,
-  onChange,
+  prefixElement: Prefix,
+  suffixElement: Suffix,
+  classNameInput = '',
   ...props
 }: InputProps) => {
   return (
-    <div className={`flex items-center w-full border rounded-lg ${className}`}>
-      {prefixElement && (
-        <span className="mr-2 text-gray-500">{prefixElement}</span>
-      )}
+    <div
+      className={`flex items-center w-full border border-gray-200 rounded-lg px-3
+        focus-within:outline-none 
+        focus-within:border-brand-500
+        focus-within:ring-2 
+        focus-within:ring-brand-500/30
+        dark:border-gray-800 
+        ${className}`}
+    >
+      {Prefix && <span className="mr-2">{Prefix}</span>}
       <input
-        className="h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3  dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30  bg-transparent text-gray-800 border-gray-300 focus:border-brand-300 focus:ring-brand-500/20 dark:border-gray-700 dark:text-white/90  dark:focus:border-brand-800"
+        className={`h-11 w-full bg-transparent text-sm text-gray-800
+          focus:outline-none  
+          dark:bg-gray-900 dark:text-white/90
+          ${classNameInput}`}
         {...props}
-        onChange={onChange}
       />
-      {suffixElement && (
-        <span className="ml-2 text-gray-500">{suffixElement}</span>
-      )}
+      {Suffix && <span className="ml-2">{Suffix}</span>}
     </div>
   )
 }
