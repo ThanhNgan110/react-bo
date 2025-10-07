@@ -1,14 +1,24 @@
 import clsx from 'clsx'
 
+// types
+import type { IMenuItem } from '../../../types'
+
 interface MenuProps {
   mode?: 'vertical' | 'horizontal'
   className?: string
-  children: React.ReactNode
+  // children: React.ReactNode
+  menus: IMenuItem[]
+  renderMenuItem: (menu: IMenuItem, index: number) => React.ReactNode
 }
 
-const Menu = ({ mode = 'vertical', className, children }: MenuProps) => {
+const Menu = ({
+  mode = 'vertical',
+  className,
+  menus,
+  renderMenuItem,
+}: MenuProps) => {
   return (
-    <div
+    <ul
       className={clsx(
         'flex justify-center gap-3 ',
         {
@@ -18,8 +28,8 @@ const Menu = ({ mode = 'vertical', className, children }: MenuProps) => {
         className
       )}
     >
-      {children}
-    </div>
+      {menus.map((menu, index) => renderMenuItem(menu, index))}
+    </ul>
   )
 }
 
