@@ -1,20 +1,19 @@
 import { useState } from 'react'
 
+import { CircleUserRound, Settings, LogOut, BadgeAlert } from 'lucide-react'
+
 // components
 import Button from '../../atoms/Button'
 import {
-  AccountSettingsIcon,
   BellIcon,
   DropdownIcon,
   MoonIcon,
   NavigationIcon,
   SearchIcon,
-  UserIcon,
 } from '../../atoms/Icon'
 import Input from '../../atoms/Input'
 import Avatar from '../../molecules/Avatar'
-import Menu from '../../molecules/Menu'
-import MenuItem from '../../molecules/MenuItem'
+import DropdownItem from '../../atoms/DropdownItem'
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false)
@@ -32,7 +31,7 @@ const Header = () => {
           classNameInput="py-2 px-3 placeholder:text-sm placeholder:text-gray-400 dark:placeholder:text-gray-400 rounded-lg"
           prefixElement={
             <SearchIcon
-              className="mr-2 fill-gray-500 dark:fill-gray-400"
+              className="fill-gray-500 dark:fill-gray-400"
               width={20}
               height={20}
             />
@@ -44,13 +43,13 @@ const Header = () => {
       <div className="flex items-center gap-5">
         <div className="flex gap-3">
           <Button
-            className="bg-white border border-gray-200 rounded-full dark:border-gray-800 p-2"
+            className="flex items-center justify-center bg-white border border-gray-200 rounded-full w-11 h-11 dark:border-gray-800 p-2"
             type="button"
             variant="secondary"
             icon={<MoonIcon className="text-gray-500" />}
           />
           <Button
-            className="bg-white border border-gray-200 rounded-full dark:border-gray-800 p-2"
+            className="flex items-center justify-center bg-white border border-gray-200 rounded-full  w-11 h-11 dark:border-gray-800 p-2"
             type="button"
             variant="secondary"
             icon={<BellIcon className="text-gray-500" />}
@@ -72,34 +71,53 @@ const Header = () => {
             viewBox="0 0 18 20"
             onClick={() => setOpenMenu(!openMenu)}
           />
-
-          {/* <div className="absolute right-0 top-12 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-            <div className="px-4 py-2">
-              <p className="text-sm font-medium">Musharof Chowdhury</p>
-              <p className="text-xs text-gray-500">randomuser@pimjo.com</p>
-            </div>
-            <ul className="py-2 text-sm">
-              <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                Edit profile
-              </li>
-              <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                Account Settings
-              </li>
-              <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                Support
-              </li>
-              <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                Sign out
-              </li>
-            </ul>
-          </div> */}
-
-          <div className="absolute w-55 px-2 py-1 right-0 top-12 rounded-lg bg-white shadow-lg border border-gray-200  dark:bg-gray-800 dark:border-gray-700">
-            <div className="px-4 py-5">
-              <p className="text-sm font-medium">Musharof Chowdhury</p>
+          <div className="absolute w-64 px-2 py-1 right-0 top-12 rounded-lg bg-white shadow-lg border border-gray-200  dark:bg-gray-800 dark:border-gray-700">
+            <div className="mt-4">
+              <p className="text-sm font-medium text-gray-900">
+                Musharof Chowdhury
+              </p>
               <p className="text-gray-500">randomuser@pimjo.com</p>
             </div>
-            <Menu mode="vertical">
+            <ul className="py-2 text-sm">
+              <li className="flex gap-2  text-sm  px-3 py-2 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 cursor-pointer hover:rounded-lg">
+                <DropdownItem className="flex gap-3 items-center" tag="button">
+                  <CircleUserRound
+                    className="text-gray-400 dark:text-gray-300"
+                    size={24}
+                  />
+                  <span>Edit profile</span>
+                </DropdownItem>
+              </li>
+              <li className="px-3 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 cursor-pointer hover:rounded-lg">
+                <DropdownItem className="flex gap-3 items-center" tag="button">
+                  <Settings
+                    className="text-gray-400 dark:text-gray-300"
+                    size={24}
+                  />
+                  Account Settings
+                </DropdownItem>
+              </li>
+              <li className="px-3 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 cursor-pointer hover:rounded-lg ">
+                <DropdownItem className="flex gap-3 items-center" tag="button">
+                  <BadgeAlert
+                    className="text-gray-400 dark:text-gray-300"
+                    size={24}
+                  />
+                  Support
+                </DropdownItem>
+              </li>
+              <li className="py-2 border-t-1 border-gray-200 mt-3"></li>
+              <li className="px-3 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-white-100 dark:hover:text-gray-300 cursor-pointer hover:rounded-lg">
+                <DropdownItem className="flex gap-3 items-center" tag="button">
+                  <LogOut
+                    className="text-gray-400 dark:text-gray-300"
+                    size={24}
+                  />
+                  Sign out
+                </DropdownItem>
+              </li>
+            </ul>
+            {/* <Menu mode="vertical">
               <MenuItem className=" flex items-center gap-2 rounded-lg text-sm text-gray-700 px-3 py-2 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700">
                 <UserIcon
                   className="fill-gray-500 group-hover:fill-gray-800 dark:fill-gray-400 dark:group-hover:fill-gray-300"
@@ -128,7 +146,7 @@ const Header = () => {
                 <UserIcon width={24} height={24} viewBox="0 0 20 24" />
                 <span>Sign out</span>
               </MenuItem>
-            </Menu>
+            </Menu> */}
           </div>
         </div>
       </div>

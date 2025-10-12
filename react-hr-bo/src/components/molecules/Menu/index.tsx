@@ -6,14 +6,13 @@ import type { IMenuItem } from '../../../types'
 interface MenuProps {
   mode?: 'vertical' | 'horizontal'
   className?: string
-  // children: React.ReactNode
   menus: IMenuItem[]
   renderMenuItem: (menu: IMenuItem, index: number) => React.ReactNode
 }
 
 const Menu = ({
   mode = 'vertical',
-  className,
+  className='',
   menus,
   renderMenuItem,
 }: MenuProps) => {
