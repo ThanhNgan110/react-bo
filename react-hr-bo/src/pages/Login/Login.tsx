@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 
 // components
 import Button from '../../components/atoms/Button'
-import { GoogleIcon, XIcon } from '../../components/atoms/Icon'
-import Input from '../../components/atoms/Input'
+import { GoogleIcon, MoonIcon, XIcon } from '../../components/atoms/Icon'
+import { Input } from '../../components/atoms/Input'
 import Label from '../../components/atoms/Label'
 
 const Login = () => {
@@ -144,7 +144,10 @@ const Login = () => {
               <img src="/assets/images/shape/grid-01.svg" alt="grid" />
             </div>
             <div className="flex flex-col items-center max-w-xs">
-              <Link to="/assets/images/logo/auth-logo.svg" className="block mb-4">
+              <Link
+                to="/assets/images/logo/auth-logo.svg"
+                className="block mb-4"
+              >
                 <img
                   width={231}
                   height={48}
@@ -156,6 +159,9 @@ const Login = () => {
                 Free and Open-Source Tailwind CSS Admin Dashboard Template
               </p>
             </div>
+          </div>
+          <div className="absolute bottom-10 right-12 bg-brand-500 rounded-full flex items-center justify-center w-15 h-15 cursor-pointer hover:bg-brand-700">
+            <MoonIcon className=" text-gray-100  " />
           </div>
         </div>
       </div>
