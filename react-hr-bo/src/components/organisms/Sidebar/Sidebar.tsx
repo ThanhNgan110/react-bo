@@ -25,7 +25,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <aside className="min-h-screen w-2xs border-r-2 border-gray-200 px-5 h-10">
+      <aside className="hidden md:block min-h-screen h-auto w-2xs border-r-2 border-gray-200 px-5">
         <h1 className="flex gap-3 py-8 ">
           <a href="/">
             <img src="/assets/images/logo/logo.svg" alt="TailAdmin" />
