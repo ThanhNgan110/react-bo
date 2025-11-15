@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom'
 import { PATH } from '../../../configs'
+import { Ellipsis } from 'lucide-react'
+
+// contexts
+import { useSidebar } from '../../../contexts/SidebarContext'
 
 //types
 import type { IMenuItem } from '../../../types'
@@ -9,6 +13,8 @@ import { MenuIcon, UserIcon } from '../../atoms/Icon'
 import Menu from '../../molecules/Menu'
 
 const Sidebar = () => {
+  const { isExpanded, isHovered, setIsHovered } = useSidebar()
+
   const navItems: IMenuItem[] = [
     {
       name: 'Dashboard',
@@ -23,18 +29,38 @@ const Sidebar = () => {
     },
   ]
 
+  const handleHovered = (isHovered: boolean) => () => {
+    if (!isExpanded) {
+      setIsHovered(isHovered)
+    }
+  }
+
   return (
     <>
-      <aside className="hidden md:block min-h-screen h-auto w-2xs border-r-2 border-gray-200 px-5">
+      <aside
+        className={`hidden md:block min-h-screen border-r-2 border-gray-200 px-5 transition-all duration-300 ${
+          isExpanded || isHovered ? 'w-[290px]' : 'w-[90px]'
+        }`}
+        onMouseEnter={handleHovered(true)}
+        onMouseLeave={handleHovered(false)}
+      >
         <h1 className="flex gap-3 py-8 ">
           <a href="/">
-            <img src="/assets/images/logo/logo.svg" alt="TailAdmin" />
+            {isExpanded || isHovered ? (
+              <img src="/assets/images/logo/logo.svg" alt="TailAdmin" />
+            ) : (
+              <img
+                className="ml-3"
+                src="/assets/images/logo/logo-icon.svg"
+                alt="TailAdmin"
+              />
+            )}
           </a>
         </h1>
 
         <nav className="mb-6">
           <h2 className="mb-5 text-gray-400 text-xs uppercase leading-1.5">
-            Menu
+            {isExpanded || isHovered ? 'Menu' : <Ellipsis className="ml-3" />}
           </h2>
           <Menu
             mode="vertical"
@@ -48,9 +74,13 @@ const Sidebar = () => {
                   <span className="text-gray-500 text-sm font-medium">
                     {data.icon}
                   </span>
-                  <span className="text-gray-700 text-sm font-medium">
-                    {data.name}
-                  </span>
+                  {isExpanded || isHovered ? (
+                    <span className="text-gray-700 text-sm font-medium">
+                      {data.name}
+                    </span>
+                  ) : (
+                    ''
+                  )}
                 </Link>
               </li>
             )}

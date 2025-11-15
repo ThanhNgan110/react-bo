@@ -24,3 +24,8 @@ export const PATH = {
   EMPLOYEE_SHOW: '/employee/show/:id',
   NOT_FOUND: '/not-found',
 }
+
+export const REGEX_PASSWORD =
+  /^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).*$/
+
+export const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

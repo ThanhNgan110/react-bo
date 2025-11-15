@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
-
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { MoonIcon } from 'lucide-react'
 
 // components
 import Button from '../../components/atoms/Button'
@@ -9,15 +10,83 @@ import { TextField } from '../../components/molecules/TextField'
 import Label from '../../components/atoms/Label'
 import { Input } from '../../components/atoms/Input'
 
-import { MoonIcon } from 'lucide-react'
+//configs
+import { PATH, REGEX_EMAIL, REGEX_PASSWORD } from '../../configs'
+import { httpRequest } from '../../services/initRequest'
+import type { ApiResponse, IUser } from '../../services'
+
+interface IForm {
+  first_name: string
+  last_name: string
+  email: string
+  password: string
+}
 
 const Register = () => {
+  const navigate = useNavigate()
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm()
-  const onSubmit = (data) => console.log(data)
+  } = useForm<IForm>()
+  const onSubmit = async (dataInput: IForm) => {
+    try {
+      const bodyData = {
+        data: {
+          ...dataInput,
+          address: '140 le van sy',
+          city: 'HCM',
+          country: 'VN',
+          state: '14',
+          role: 'user',
+        },
+      }
+
+      console.log('data', bodyData)
+      const res = await httpRequest<ApiResponse<IUser>>('api/user/signup', {
+        method: 'POST',
+        data: bodyData,
+      })
+
+      const { isSucess } = res.data
+
+      if (!isSucess) {
+        toast.error('Register failed!', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+        return
+      }
+
+      toast.success('Register successfully!', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+      navigate(PATH.LOGIN)
+    } catch (error: any) {
+      const { msg } = error?.response?.data || 'Register fail'
+
+      toast.error(msg, {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+    }
+  }
 
   return (
     <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
@@ -71,10 +140,12 @@ const Register = () => {
                           <span className="text-error-500">*</span>{' '}
                         </Label>
                         <TextField
+                          {...register('first_name', {
+                            required: 'First Name is required',
+                          })}
+                          aria-invalid={errors.first_name ? 'true' : 'false'}
                           placeholder="Enter your first name"
-                          className="flex flex-col"
-                          {...register('email', { required: true })}
-                          aria-invalid={errors.firstName ? 'true' : 'false'}
+                          error={errors.first_name}
                         />
                       </div>
                       <div className="flex flex-col w-3xs">
@@ -83,9 +154,12 @@ const Register = () => {
                           <span className="text-error-500">*</span>{' '}
                         </Label>
                         <TextField
+                          {...register('last_name', {
+                            required: 'Last Name is required',
+                          })}
+                          aria-invalid={errors.last_name ? 'true' : 'false'}
                           placeholder="Enter your last name"
-                          {...register('email', { required: true })}
-                          aria-invalid={errors.firstName ? 'true' : 'false'}
+                          error={errors.last_name}
                         />
                       </div>
                     </div>
@@ -94,9 +168,16 @@ const Register = () => {
                         Email <span className="text-error-500">*</span>{' '}
                       </Label>
                       <TextField
+                        {...register('email', {
+                          required: 'Email is required',
+                          pattern: {
+                            value: REGEX_EMAIL,
+                            message: 'Invalid email format',
+                          },
+                        })}
+                        aria-invalid={errors.email ? 'true' : 'false'}
                         placeholder="Enter your email"
-                        {...register('email', { required: true })}
-                        aria-invalid={errors.firstName ? 'true' : 'false'}
+                        error={errors.email}
                       />
                     </div>
                     <div>
@@ -105,6 +186,7 @@ const Register = () => {
                       </Label>
                       <div className="relative">
                         <TextField
+                          aria-invalid={errors.password ? 'true' : 'false'}
                           type="text"
                           placeholder="Enter your password"
                           suffixElement=<EyeOutlinedIcon
@@ -114,7 +196,12 @@ const Register = () => {
                           />
                           {...register('password', {
                             required: 'Password is required',
+                            pattern: {
+                              value: REGEX_PASSWORD,
+                              message: 'Invalid password format',
+                            },
                           })}
+                          error={errors.password}
                         />
                         <span
                           // onClick={() => setShowPassword(!showPassword)}
@@ -156,7 +243,7 @@ const Register = () => {
                   <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                     Already have an account?
                     <Link
-                      to={''}
+                      to={PATH.LOGIN}
                       className="text-brand-500 hover:text-brand-600 ml-2 dark:text-brand-400"
                     >
                       Login
@@ -183,7 +270,7 @@ const Register = () => {
                 <img
                   width={231}
                   height={48}
-                  src="src/images/logo/auth-logo.svg"
+                  src="/assets/images/logo/logo.svg"
                   alt="Logo"
                 />
               </Link>

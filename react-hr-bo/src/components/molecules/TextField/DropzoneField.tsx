@@ -5,7 +5,6 @@ import { Upload } from 'lucide-react'
 
 // components
 import { Input } from '../../atoms/Input'
-import Label from '../../atoms/Label'
 
 const DropzoneField = () => {
   const onDrop = useCallback((acceptedFiles) => {
