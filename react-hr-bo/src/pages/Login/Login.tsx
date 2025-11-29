@@ -1,11 +1,19 @@
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { EyeIcon, EyeOff } from 'lucide-react'
 import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '../../store'
 
 // components
 import Button from '../../components/atoms/Button'
-import { GoogleIcon, MoonIcon, XIcon } from '../../components/atoms/Icon'
+import {
+  DarkIcon,
+  GoogleIcon,
+  MoonIcon,
+  XIcon,
+} from '../../components/atoms/Icon'
 import { TextField } from '../../components/molecules/TextField'
 import Label from '../../components/atoms/Label'
 
@@ -13,25 +21,29 @@ import Label from '../../components/atoms/Label'
 import type { IFormInput } from '../../types'
 
 // services
-import type { ApiResponse } from '../../services'
+import type { ApiResponse, AuthData, IUser } from '../../services'
 import { httpRequest } from '../../services/initRequest'
 
 // configs
 import { PATH, REGEX_EMAIL } from '../../configs'
 import { setLocalStorage } from '../../utils/localStorage'
-import React from 'react'
+
+import { setAuth, setLoading } from '../../redux/userSlice'
+import { useTheme } from '../../contexts/ThemeContext'
 
 const Login = () => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = React.useState<boolean>(false)
+  const dispatch = useDispatch<AppDispatch>()
+  const { theme, toggleTheme } = useTheme()
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<IFormInput>()
+  } = useForm<IUser>()
   const onSubmit = async (
-    dataInput: Omit<IFormInput, 'first_name' | '  last_name'>
+    dataInput: Omit<IUser, 'first_name' | 'last_name'>
   ) => {
     try {
       const bodyData = {
@@ -40,13 +52,12 @@ const Login = () => {
         },
       }
 
-      const res = await httpRequest<ApiResponse>('api/user/signin', {
+      const res = await httpRequest<ApiResponse<AuthData>>('api/user/signin', {
         method: 'POST',
         data: bodyData,
       })
 
-      const { access_token, refresh_token } = (await res?.data) || {}
-
+      const { access_token, refresh_token } = res.data || {}
       toast.success('Login successfully!', {
         position: 'top-right',
         autoClose: 2000,
@@ -58,10 +69,10 @@ const Login = () => {
       })
       setLocalStorage('access_token', access_token)
       setLocalStorage('refresh_token', refresh_token)
+
       navigate(PATH.DASHBOARD)
     } catch (error: any) {
       const { msg } = error?.response?.data || 'Login fail'
-
       toast.error(msg, {
         position: 'top-right',
         autoClose: 2000,
@@ -152,12 +163,12 @@ const Login = () => {
                         />
                         <span
                           onClick={() => setShowPassword((prev) => !prev)}
-                          className="absolute top-7 z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                          className="absolute top-7 z-30 -translate-y-1/2 cursor-pointer right-4"
                         >
                           {showPassword ? (
-                            <EyeIcon className="text-gray-400 dark:fill-gray-400 size-5" />
+                            <EyeIcon className=" text-gray-400  size-5" />
                           ) : (
-                            <EyeOff className="text-gray-400 dark:fill-gray-400 size-5" />
+                            <EyeOff className="text-gray-400 size-5" />
                           )}
                         </span>
                       </div>
@@ -180,7 +191,11 @@ const Login = () => {
                       </Link>
                     </div>
                     <div className="text-center">
-                      <Button className="w-full" sizes="sm" type="submit">
+                      <Button
+                        className="w-full flex justify-center items-center gap-5"
+                        sizes="sm"
+                        type="submit"
+                      >
                         Sign in
                       </Button>
                     </div>
@@ -227,8 +242,20 @@ const Login = () => {
               </p>
             </div>
           </div>
-          <div className="absolute bottom-10 right-12 bg-brand-500 rounded-full flex items-center justify-center w-15 h-15 cursor-pointer hover:bg-brand-700">
-            <MoonIcon className=" text-gray-100  " />
+          <div className="absolute bottom-10 right-12  flex items-center justify-center">
+            <Button
+              onClick={toggleTheme}
+              className="w-15 h-15 flex items-center justify-center bg-brand-500 hover:bg-brand-600 border-none rounded-full w-11 h-11  p-2"
+              type="button"
+              variant="none"
+              icon={
+                theme === 'light' ? (
+                  <MoonIcon className="text-gray-200" />
+                ) : (
+                  <DarkIcon className="text-gray-200" />
+                )
+              }
+            />
           </div>
         </div>
       </div>

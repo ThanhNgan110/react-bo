@@ -38,7 +38,7 @@ const Sidebar = () => {
   return (
     <>
       <aside
-        className={`hidden md:block min-h-screen border-r-2 border-gray-200 px-5 transition-all duration-300 ${
+        className={`hidden md:block min-h-screen border-r-2 border-gray-200 px-5 transition-all duration-300 dark:border-gray-800 dark:bg-black  ${
           isExpanded || isHovered ? 'w-[290px]' : 'w-[90px]'
         }`}
         onMouseEnter={handleHovered(true)}

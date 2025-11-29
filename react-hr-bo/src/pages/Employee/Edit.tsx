@@ -10,8 +10,17 @@ import {
 } from '../../components/molecules/TextField'
 import { Input, TextArea } from '../../components/atoms/Input'
 import Button from '../../components/atoms/Button'
+import React from 'react'
+import { httpRequest } from '../../services/initRequest'
 
 const EmployeeEdit = () => {
+  // React.useEffect(() => {
+  //   const getEmployeeById = async () => {
+  //     try {
+  //       const data = httpRequest.get('/api/member/:id')
+  //     } catch (error) {}
+  //   }
+  // })
   return (
     <div className="flex flex-col gap-5 p-5 border border-gray-200 rounded-2xl dark:border-gray-800 dark:bg-white">
       <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">

@@ -4,7 +4,7 @@ import type { TVariants } from '../../../types'
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
   children?: React.ReactNode
-  sizes?: 'sm' | 'md'
+  sizes?: 'sm' | 'md' | 'default'
   variant?: 'primary' | 'outlined' | 'secondary' | 'none'
   icon?: React.FC<React.SVGProps<SVGSVGElement>> | React.ReactNode
   onClick?: () => void
@@ -15,16 +15,17 @@ const Button: React.FC<ButtonProps> = ({
   className = '',
   type = 'button',
   variant = 'primary',
-  sizes='sm',
+  sizes = 'sm',
   children,
   icon: IconComponent,
   onClick,
   disabled = false,
   ...rest
 }) => {
-  const SizesClass: Record<'sm' | 'md', string> = {
+  const SizesClass: Record<'sm' | 'md' | 'default', string> = {
     sm: 'text-sm px-4 py-3',
     md: 'text-sm py-3 px-7',
+    default: '',
   }
 
   const VariantsClass: Record<TVariants, string> = {
@@ -35,7 +36,7 @@ const Button: React.FC<ButtonProps> = ({
   }
   return (
     <button
-      className={`${className} transition cursor-pointer ${VariantsClass[variant]} ${sizes ? SizesClass[sizes] : ''} ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
+      className={`transition cursor-pointer ${className} ${VariantsClass[variant]} ${sizes ? SizesClass[sizes] : ''} ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
       type={type}
       onClick={onClick}
       {...rest}

@@ -1,4 +1,4 @@
-export interface ApiResponse<T = unknown> {
+export interface ApiResponse<T> {
   isSucess?: boolean
   msg?: string
   data?: T | null
@@ -14,4 +14,9 @@ export interface IUser {
   state: string
   role: 'user' | 'admin'
   password: string
+}
+
+export interface AuthData {
+  access_token: string
+  refresh_token: string
 }

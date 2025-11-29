@@ -7,10 +7,10 @@ const Template1 = ({ children }: React.PropsWithChildren) => {
     <>
       <div className="min-h-screen flex">
         <Sidebar />
-        <div className="flex-1">
+        <div className="flex-1  dark:bg-black">
           <Header />
           <main>
-            <div className="mx-auto xsm:w-full max-w-[500px] md:max-w-(--breakpoint-2xl) p-4">
+            <div className="mx-auto xsm:w-full max-w-[500px] md:max-w-(--breakpoint-2xl) p-4 dark:border-gray-800 dark:bg-black">
               {children}
             </div>
           </main>

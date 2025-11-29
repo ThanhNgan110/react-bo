@@ -13,9 +13,14 @@ const Table = <T,>({
   dataSource,
   renderBody,
 }: TableProps<T>) => {
+  console.log(dataSource)
+
   return (
     <table className={className}>
-      <TableHead columns={columns} />
+      <TableHead
+        className="dark:border-b-1 dark:border-gray-700"
+        columns={columns}
+      />
       <tbody className="divide-y divide-gray-300">
         {dataSource.map((item, index) => renderBody(item, index))}
       </tbody>

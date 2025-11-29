@@ -12,14 +12,22 @@ import App from './App.tsx'
 import { SidebarProvider } from './contexts/SidebarContext.tsx'
 import { initRequest } from './services/initRequest.ts'
 
-initRequest()
+import { store } from './store.ts'
+import { Provider } from 'react-redux'
+import { ThemProvider } from './contexts/ThemeContext.tsx'
+
+initRequest(store)
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <SidebarProvider>
-        <ToastContainer />
-        <App />
-      </SidebarProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ThemProvider>
+          <SidebarProvider>
+            <ToastContainer />
+            <App />
+          </SidebarProvider>
+        </ThemProvider>
+      </BrowserRouter>
+    </Provider>
   </StrictMode>
 )

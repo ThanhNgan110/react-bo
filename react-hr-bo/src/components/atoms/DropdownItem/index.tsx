@@ -28,6 +28,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
   }
 
   if (tag === 'a' && to) {
+    
     return (
       <Link className={combinedClassName} to={to} onClick={handleClick}>
         {children}
@@ -37,7 +38,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
   return (
     <button
       className={`cursor-pointer ${combinedClassName}`}
-      onClick={handleClick}
+      onClick={onClick}
     >
       {children}
     </button>

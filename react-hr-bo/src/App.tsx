@@ -2,13 +2,18 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 //templates
-import Template1 from './layouts/template1/Template1'
+const Template1 = React.lazy(() =>
+  import('./layouts/template1/Template1').then((module) => ({
+    default: module.default,
+  }))
+)
 
 import { PATH } from './configs'
 
 // routes
 import ProtectedRoute from './routes/ProtectedRoute'
 import AuthRoute from './routes/AuthRoute'
+import { Spinner } from './components/molecules/Spinner'
 
 //pages
 const Login = React.lazy(() =>
@@ -60,77 +65,73 @@ function App() {
       break
   }
 
+  const routeConfig = [
+    {
+      path: PATH.DASHBOARD,
+      component: Dashboard,
+      guard: ProtectedRoute,
+      template: Template,
+    },
+    {
+      path: PATH.LOGIN,
+      component: Login,
+      guard: AuthRoute,
+    },
+    {
+      path: PATH.REGISTER,
+      component: Register,
+      guard: AuthRoute,
+    },
+    {
+      path: PATH.EMPLOYEE_LIST,
+      component: EmployeeList,
+      guard: ProtectedRoute,
+      template: Template,
+    },
+    {
+      path: PATH.EMPLOYEE_CREATE,
+      component: EmployeeCreate,
+      guard: ProtectedRoute,
+      template: Template,
+    },
+    {
+      path: PATH.EMPLOYEE_EDIT,
+      component: EmployeeEdit,
+      guard: ProtectedRoute,
+      template: Template,
+    },
+    {
+      path: PATH.EMPLOYEE_SHOW,
+      component: EmployeeShow,
+      guard: ProtectedRoute,
+      template: Template,
+    },
+  ]
+
   return (
     <>
+      <Spinner />
       <React.Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path={PATH.ROOT} element={<Navigate to={'/dashboard'} />} />
-          <Route
-            path={PATH.DASHBOARD}
-            element={
-              <ProtectedRoute>
-                <Template>
-                  <Dashboard />
-                </Template>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path={PATH.LOGIN}
-            element={
-              <AuthRoute>
-                <Login />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path={PATH.REGISTER}
-            element={
-              <AuthRoute>
-                <Register />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path={PATH.EMPLOYEE_LIST}
-            element={
-              <ProtectedRoute>
-                <Template>
-                  <EmployeeList />
-                </Template>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path={PATH.EMPLOYEE_CREATE}
-            element={
-              <ProtectedRoute>
-                <Template>
-                  <EmployeeCreate />
-                </Template>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path={PATH.EMPLOYEE_EDIT}
-            element={
-              <ProtectedRoute>
-                <Template>
-                  <EmployeeEdit />
-                </Template>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path={PATH.EMPLOYEE_SHOW}
-            element={
-              <ProtectedRoute>
-                <Template>
-                  <EmployeeShow />
-                </Template>
-              </ProtectedRoute>
-            }
-          />
+          {routeConfig.map((route) => {
+            const Guard = route?.guard || React.Fragment
+            const TemplateComp = route?.template || React.Fragment
+            const Component = route?.component || React.Fragment
+            return (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  <Guard>
+                    <TemplateComp>
+                      <Component />
+                    </TemplateComp>
+                  </Guard>
+                }
+              />
+            )
+          })}
         </Routes>
       </React.Suspense>
     </>

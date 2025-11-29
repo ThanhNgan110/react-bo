@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:8000'
+export const API_URL = 'https://tony-auth-express-vdee.vercel.app/'
 
 export const STATUS = {
   NEW: 'New',
@@ -20,7 +20,7 @@ export const PATH = {
   REGISTER: '/register',
   EMPLOYEE_LIST: '/employee/list',
   EMPLOYEE_CREATE: '/employee/create',
-  EMPLOYEE_EDIT: '/employee/edit/:id',
+  EMPLOYEE_EDIT: '/employee/edit/:_id',
   EMPLOYEE_SHOW: '/employee/show/:id',
   NOT_FOUND: '/not-found',
 }

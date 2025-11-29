@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.10.1",
     "@tailwindcss/vite": "^4.1.13",
     "apexcharts": "^5.3.6",
     "axios": "^1.13.2",
@@ -23,6 +24,7 @@
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.62.0",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.5",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.13"

@@ -46,7 +46,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         <input
           ref={inputRef}
           placeholder={placeholder}
-          className="h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400"
+          className="h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs border-gray-300 dark:border-gray-700  placeholder:text-gray-400 focus:outline-hidden focus:border-brand-500 focus:ring-3 focus:ring-brand-500/10"
         />
         {suffixIcon && (
           <span className="absolute -translate-y-1/2 right-3 top-1/2 pointer-events-none text-gray-500">

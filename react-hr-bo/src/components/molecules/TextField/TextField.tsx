@@ -23,15 +23,12 @@ const TextField = ({
   return (
     <>
       <div
-        className={`relative flex items-center border border-gray-300 w-full rounded-lg
-        focus-within:outline-none 
-      focus:border-brand-300 focus:ring-brand-500/20
-        dark:border-gray-800 
+        className={`relative flex items-center w-full rounded-lg dark:border-gray-800
         ${className}`}
       >
-        {Prefix && <span className="mr-2">{Prefix}</span>}
+        {Prefix && Prefix}
         <Input
-          classNameInput={`border-none outline-none bg-transparent focus:outline-none focus:ring-0 focus:border ${classNameInput}`}
+          classNameInput={`dark:bg-dark-900 h-9 w-full rounded-lg border border-gray-200 bg-transparent text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 ${classNameInput}`}
           {...props}
         />
         {Suffix && <span className="ml-2">{Suffix}</span>}
