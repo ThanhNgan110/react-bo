@@ -18,7 +18,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   return (
     <>
       <textarea
-        className={`w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500 dark:border-gray-700 ${className}`}
+        className={`w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:text-white ${className}`}
         {...rest}
       >
         {children}
