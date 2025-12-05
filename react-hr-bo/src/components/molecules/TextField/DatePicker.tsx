@@ -11,6 +11,7 @@ interface DatePickerProps {
   suffixIcon?: React.ReactNode
   defaultDate?: flatpickr.Options.DateOption
   error?: FieldError | undefined
+  value?: string
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -19,6 +20,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   placeholder,
   suffixIcon,
   defaultDate,
+  value,
   error,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -44,9 +46,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
     <>
       <div className="relative w-full">
         <input
+          value={value?? ''}
           ref={inputRef}
           placeholder={placeholder}
-          className="h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs border-gray-300 dark:border-gray-700  placeholder:text-gray-400 focus:outline-hidden focus:border-brand-500 focus:ring-3 focus:ring-brand-500/10"
+          className="h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs border-gray-300 dark:border-gray-700  placeholder:text-gray-400 focus:outline-hidden focus:border-brand-500 focus:ring-3 focus:ring-brand-500/10 dark:text-gray-300"
         />
         {suffixIcon && (
           <span className="absolute -translate-y-1/2 right-3 top-1/2 pointer-events-none text-gray-500">
