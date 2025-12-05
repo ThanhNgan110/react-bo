@@ -13,7 +13,7 @@ import { MenuIcon, UserIcon } from '../../atoms/Icon'
 import Menu from '../../molecules/Menu'
 
 const Sidebar = () => {
-  const { isExpanded, isHovered, setIsHovered } = useSidebar()
+  const { isExpanded, isHovered, setIsHovered, isMobileOpen } = useSidebar()
 
   const navItems: IMenuItem[] = [
     {
@@ -34,13 +34,12 @@ const Sidebar = () => {
       setIsHovered(isHovered)
     }
   }
-
   return (
     <>
       <aside
-        className={`hidden md:block min-h-screen border-r-2 border-gray-200 px-5 transition-all duration-300 dark:border-gray-800 dark:bg-black  ${
+        className={`fixed mt-16 z-999 md:static md:mt-0 bg-white min-h-screen border-r-2 border-gray-200 px-5 transition-all duration-300 dark:border-gray-800 dark:bg-black lg:translate-x-0 ${
           isExpanded || isHovered ? 'w-[290px]' : 'w-[90px]'
-        }`}
+        }${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}`}
         onMouseEnter={handleHovered(true)}
         onMouseLeave={handleHovered(false)}
       >
@@ -68,16 +67,26 @@ const Sidebar = () => {
             renderMenuItem={(data: IMenuItem) => (
               <li>
                 <Link
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 active:bg-brand-50"
+                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 active:bg-brand-50 dark:text-gray-300 dark:hover:bg-gray-700"
                   to={data.path}
                 >
-                  <span className="text-gray-500 text-sm font-medium">
+                  <span
+                    className="
+                      text-gray-500 text-sm font-medium
+                      group-hover:text-brand-500 dark:group-hover:text-white
+                    "
+                  >
                     {data.icon}
                   </span>
                   {isExpanded || isHovered ? (
-                    <span className="text-gray-700 text-sm font-medium">
+                    <p
+                      className="
+                        text-gray-700 text-sm font-medium dark:text-gray-400 
+                        group-hover:text-brand-500 dark:group-hover:text-white
+                      "
+                    >
                       {data.name}
-                    </span>
+                    </p>
                   ) : (
                     ''
                   )}
