@@ -11,7 +11,7 @@ interface SelectFieldProps
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void
   options: TOption[]
   suffixIcon?: React.ReactNode
-  error: FieldError | undefined
+  error?: FieldError | undefined
 }
 
 const SelectField: React.FC<SelectFieldProps> = ({
