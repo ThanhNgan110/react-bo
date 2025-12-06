@@ -1,22 +1,36 @@
-export interface ApiResponse<T> {
-  isSucess?: boolean
-  msg?: string
-  data?: T | null
+import { httpRequest } from './initRequest'
+import type { ApiResponse } from '../types'
+
+const getApi = async <T> (endPoint: string) => {
+  const res = await httpRequest.get<ApiResponse<T>>(endPoint)
+  const { isSucess, msg, data} = res.data
+
+  return {
+    msg: msg?? '',
+    data: data ?? null,
+    isSuccess: isSucess ?? false,
+  }
 }
 
-export interface IUser {
-  first_name: string
-  last_name: string
-  email: string
-  address: string
-  city: string
-  country: string
-  state: string
-  role: 'user' | 'admin'
-  password: string
+const post = async <T>(endPoint: string, bodyData: T) => {
+  const res = await httpRequest.post<ApiResponse<T>>(endPoint, bodyData)
+  const { isSucess, msg, data} = res.data
+
+  return {
+    msg: msg ?? '',
+    data: data ?? null,
+    isSuccess: isSucess ?? false,
+  }
 }
 
-export interface AuthData {
-  access_token: string
-  refresh_token: string
+const put = async <T>(endPoint: string, data: T) => {
+  const res = await httpRequest.post<ApiResponse<T>>(endPoint, data)
+
+  return {
+    msg: res.msg ?? '',
+    data: res.data ?? null,
+    isSuccess: res.isSucess ?? false,
+  }
 }
+
+export { getApi, post, put }
