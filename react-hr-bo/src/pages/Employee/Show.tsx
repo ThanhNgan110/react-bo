@@ -1,23 +1,48 @@
+import React from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 // components
 import Avatar from '../../components/molecules/Avatar'
 import Button from '../../components/atoms/Button'
 
+import type { IMember } from '../../types'
+import { getApi } from '../../services'
+
 const EmployeeShow = () => {
+  const { _id } = useParams()
+  const navigate = useNavigate()
+  const [employee, setEmployee] = React.useState<IMember | null>(null)
+
+  React.useEffect(() => {
+  
+      const getEmployee = async () => {
+        const res = await getApi<IMember>(`api/member/${_id}`)
+        const data = res.data ?? null
+        setEmployee(data)
+      }
+      getEmployee()
+    
+  }, [_id])
+
+  const handleEdit = () => {
+    if (!_id) return
+    navigate(`/employee/edit/${_id}`, { replace: false })
+  }
+
   return (
-    <div className="border border-gray-300 rounded-lg p-5">
+    <div className="border border-gray-300 rounded-lg p-5 dark:border-gray-800">
       <h3 className="font-semibold text-black dark:text-white mb-4">
         Show Detail
       </h3>
       <div className="flex justify-between items-center mb-6">
         <Avatar src="/src/" alt="avatar" />
-        <Button variant="primary" className="px-3 py-2">
+        <Button variant="primary" className="px-3 py-2" onClick={handleEdit}>
           Edit profile
         </Button>
       </div>
       <div className="mb-6">
         <p className="text-sm text-gray-500 dark:text-gray-400">Employee ID</p>
         <p className="font-medium text-gray-800 dark:text-white/90">
-          edcf765c-82d3-4c06-8102
+          {employee?._id || ''}
         </p>
       </div>
       <div className="flex justify-between gap-6 mb-6">
@@ -25,26 +50,30 @@ const EmployeeShow = () => {
           <p className="text-sm text-gray-500 mb-1 dark:text-gray-400">
             First Name
           </p>
-          <p className="font-medium text-gray-800 dark:text-white/90">Tony</p>
+          <p className="font-medium text-gray-800 dark:text-white/90">
+            {employee?.firstName || ''}
+          </p>
         </div>
         <div className="flex-1">
           <p className="text-sm text-gray-500 mb-1 dark:text-gray-400">
             Last Name
           </p>
-          <p className="font-medium text-gray-800 dark:text-white/90">Nguyen</p>
+          <p className="font-medium text-gray-800 dark:text-white/90">
+            {employee?.lastName || ''}
+          </p>
         </div>
       </div>
       <div className="flex justify-between gap-6 mb-6">
         <div className="flex-1">
           <p className="text-sm text-gray-500 mb-1 dark:text-gray-400">Email</p>
           <p className="font-medium text-gray-800 dark:text-white/90">
-            tony@gmail.com
+            {employee?.email || ''}
           </p>
         </div>
         <div className="flex-1">
           <p className="text-sm text-gray-500 mb-1 dark:text-gray-400">Phone</p>
           <p className="font-medium text-gray-800 dark:text-white/90">
-            +84 123 456 789
+            {employee?.phone || ''}
           </p>
         </div>
       </div>
@@ -54,7 +83,7 @@ const EmployeeShow = () => {
             Date of birth
           </p>
           <p className="font-medium text-gray-800 dark:text-white/90">
-            12/12/1990
+            {employee?.dob || ''}
           </p>
         </div>
         <div className="flex-1">
@@ -62,7 +91,7 @@ const EmployeeShow = () => {
             Birth place
           </p>
           <p className="font-medium text-gray-800 dark:text-white/90">
-            Ho Chi Minh City
+            {employee?.bio || ''}
           </p>
         </div>
       </div>
@@ -72,20 +101,22 @@ const EmployeeShow = () => {
             Nationality
           </p>
           <p className="font-medium text-gray-800 dark:text-white/90">
-            Viet Nam
+            {employee?.nationality || ''}
           </p>
         </div>
         <div className="flex-1">
           <p className="text-sm text-gray-500 mb-1 dark:text-gray-400">
             Gender
           </p>
-          <p className="font-medium text-gray-800 dark:text-white/90">Male</p>
+          <p className="font-medium text-gray-800 dark:text-white/90">
+            {employee?.gender || ''}
+          </p>
         </div>
       </div>
       <div className="flex flex-col justify-start mb-6">
         <p className="text-sm text-gray-500 mb-1 dark:text-gray-400">Address</p>
         <p className="font-medium text-gray-800 dark:text-white/90">
-          123 Nguyen Trai, District 1, Ho Chi Minh City
+          {employee?.address || ''}
         </p>
       </div>
       <div className="flex justify-between gap-6 mb-6">
@@ -94,21 +125,20 @@ const EmployeeShow = () => {
             Country
           </p>
           <p className="font-medium text-gray-800 dark:text-white/90">
-            Viet Nam
+            {employee?.country || ''}
           </p>
         </div>
         <div className="flex-1">
           <p className="text-sm text-gray-500 mb-1 dark:text-gray-400">State</p>
           <p className="font-medium text-gray-800 dark:text-white/90">
-            Ho Chi Minh city
+            {employee?.state || ''}
           </p>
         </div>
       </div>
       <div className="flex flex-col justify-start">
         <p className="text-sm text-gray-500 mb-1 dark:text-gray-400">Bio</p>
         <p className="font-medium text-gray-800 dark:text-white/90">
-          Team Manager at ABC Company. Passionate about technology and software
-          development.
+          {employee?.bio || ''}
         </p>
       </div>
     </div>
