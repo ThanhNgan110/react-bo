@@ -21,7 +21,7 @@ export const PATH = {
   EMPLOYEE_LIST: '/employee/list',
   EMPLOYEE_CREATE: '/employee/create',
   EMPLOYEE_EDIT: '/employee/edit/:_id',
-  EMPLOYEE_SHOW: '/employee/show/:id',
+  EMPLOYEE_SHOW: '/employee/show/:_id',
   NOT_FOUND: '/not-found',
 }
 
