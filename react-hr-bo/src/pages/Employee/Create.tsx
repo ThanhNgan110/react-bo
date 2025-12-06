@@ -1,3 +1,4 @@
+import React from 'react'
 import { Calendar } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
@@ -19,9 +20,7 @@ import { PATH, REGEX_EMAIL } from '../../configs'
 import type { IMember } from '../../types'
 
 // services
-import type { ApiResponse } from '../../services'
-import { httpRequest } from '../../services/initRequest'
-import React from 'react'
+import { post } from '../../services'
 
 const EmployeeCreate = () => {
   const navigate = useNavigate()
@@ -64,25 +63,14 @@ const EmployeeCreate = () => {
   }, [isSubmitSuccessful, reset])
 
   const onSubmit = async (data: IMember) => {
-    const { dob, avatar } = data
-    console.log(typeof dob, dob)
-    console.log(avatar, typeof avatar)
-
-    try {
-      const bodyData = {
-        data: {
-          ...data,
-        },
-      }
-
-      const res = await httpRequest<ApiResponse<IMember>>('api/member', {
-        method: 'POST',
-        data: bodyData,
-      })
-
-      const { isSucess } = res.data || {}
-      if (!isSucess) return
-
+    const bodyData = {
+      data: {
+        ...data,
+      },
+    }
+    const res = await post('api/member', bodyData)
+    const { msg, isSuccess } = res
+    if (isSuccess) {
       toast.success('Add new member success ', {
         position: 'top-right',
         autoClose: 2000,
@@ -92,12 +80,8 @@ const EmployeeCreate = () => {
         draggable: true,
         progress: undefined,
       })
-
       reset()
-      // navigate(PATH.DASHBOARD)
-    } catch (error: any) {
-      const { msg } = error?.response?.data || 'Add member fail'
-
+    } else {
       toast.error(msg, {
         position: 'top-right',
         autoClose: 2000,
@@ -114,7 +98,7 @@ const EmployeeCreate = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-5 p-5 border border-gray-200 rounded-2xl dark:border-gray-800 dark:bg-white/[0.03]">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-          Edit Employee
+          Create Employee
         </h3>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
           Fill out the form below to Employee a new employee. Make sure to
@@ -203,12 +187,13 @@ const EmployeeCreate = () => {
                   name="dob"
                   control={control}
                   rules={{ required: 'Date of Birth is required' }}
-                  render={({ field: { onChange } }) => (
+                  render={({ field }) => (
                     <DatePicker
+                      value={field.value}
                       placeholder="Select a date"
                       className="w-full"
                       mode="single"
-                      onChange={(dateStr: string) => onChange(dateStr)}
+                      onChange={(dateStr: string) => field.onChange(dateStr)}
                       suffixIcon={<Calendar className="text-gray-500" />}
                       error={errors.dob}
                     />
@@ -224,12 +209,13 @@ const EmployeeCreate = () => {
                   name="dateJoin"
                   control={control}
                   rules={{ required: 'Date join is required' }}
-                  render={({ field: { onChange } }) => (
+                  render={({ field }) => (
                     <DatePicker
+                      value={field.value}
                       placeholder="Select a date"
                       className="w-full"
                       mode="single"
-                      onChange={(dateStr: string) => onChange(dateStr)}
+                      onChange={(dateStr: string) => field.onChange(dateStr)}
                       suffixIcon={<Calendar className="text-gray-500" />}
                       error={errors.dateJoin}
                     />
