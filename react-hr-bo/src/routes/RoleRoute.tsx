@@ -13,11 +13,12 @@ export const RoleRoute = ({ children, requireRole }: RoleRoteProps) => {
   const role = 'operator'
   React.useEffect(() => {
     if (!role && requireRole.length === 0) return
-    
+
     const checkRole = requireRole.includes(role)
     if (!checkRole) {
       navigate(PATH.NOT_FOUND)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requireRole, role])
 
   return children
