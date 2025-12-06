@@ -1,49 +1,27 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { EditIcon, EyeIcon, PlusIcon } from 'lucide-react'
 //  components
 import { TextField } from '../../components/molecules/TextField'
 import { SearchIcon } from '../../components/atoms/Icon'
-import Button from '../../components/atoms/Button'
 import Table from '../../components/molecules/Table'
-import { Link } from 'react-router-dom'
-import { EditIcon, EyeIcon, PlusIcon } from 'lucide-react'
 import Avatar from '../../components/molecules/Avatar'
-import { PATH } from '../../configs'
-import React from 'react'
-import { httpRequest } from '../../services/initRequest'
-import type { IMember } from '../../types'
 
-const dataSource = [
-  {
-    key: '1',
-    name: 'Mike',
-    employeeId: 'd8a4f175-adee-7d4c-71f7',
-    team: 'Agency Website',
-    role: 'FE Developer',
-    joinDate: '2022-01-15',
-  },
-  {
-    key: '2',
-    name: 'John',
-    employeeId: 'd8a4f175-adee-7d4c-71f7',
-    team: 'Agency Website',
-    role: 'FE Developer',
-    joinDate: '2022-01-15',
-  },
-]
+import { PATH } from '../../configs'
+import type { IMember } from '../../types'
+import { getApi } from '../../services'
 
 const EmployeeList = () => {
-  const [employee, setEmployee] = React.useState<IMember[]>()
+  const [employee, setEmployee] = React.useState<IMember[]>([])
 
   React.useEffect(() => {
-    try {
-      const getEmployee = async () => {
-        const res = await httpRequest.get('/api/member')
-        const data = await res.data
-        setEmployee(data)
-      }
-      getEmployee()
-    } catch (error) {
-      console.error(error)
+    const getEmployee = async () => {
+      const res = await getApi<IMember[]>('api/member')
+      const data = res.data || []
+      setEmployee(data)
     }
+
+    getEmployee()
   }, [])
 
   return (
@@ -121,7 +99,7 @@ const EmployeeList = () => {
                 {data?.dateJoin || ''}
               </td>
               <td className="flex items-center gap-2 p-4 text-gray-500 dark:text-gray-400">
-                <Link className="flex gap-2" to={PATH.EMPLOYEE_SHOW}>
+                <Link className="flex gap-2" to={`/employee/show/${data._id}`}>
                   <span className="px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-700">
                     <EyeIcon
                       className="dark:hover:text-gray-300"
@@ -130,7 +108,7 @@ const EmployeeList = () => {
                     />
                   </span>
                 </Link>
-                <Link className="flex gap-2" to={`${PATH.EMPLOYEE_EDIT}/${data._id}`}>
+                <Link className="flex gap-2" to={`/employee/edit/${data._id}`}>
                   <span className="px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-700">
                     <EditIcon
                       className="dark:hover:text-gray-300"
