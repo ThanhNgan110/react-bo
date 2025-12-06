@@ -4,6 +4,7 @@ import { FileUser } from 'lucide-react'
 import { SimpleCard } from '../../components/molecules/Card'
 import AverageResumeMetric from '../../components/organisms/Metric/AverageResumeMetric'
 import ResumeStatistics from '../../components/organisms/Metric/ResumeStatistics'
+import TeamGroupMetric from '../../components/organisms/Metric/TeamGroupMetric'
 
 const Dashboard = () => {
   return (
@@ -75,10 +76,10 @@ const Dashboard = () => {
               </div>
             </SimpleCard>
           </div>
-
           <AverageResumeMetric />
         </div>
-        <div className="col-span-12 xl:col-span-5 ">
+        <div className="col-span-12 flex flex-col gap-5 xl:col-span-5 ">
+          <TeamGroupMetric />
           <ResumeStatistics />
         </div>
       </div>
