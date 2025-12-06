@@ -8,9 +8,9 @@ import { Upload } from 'lucide-react'
 import { Input } from '../../atoms/Input'
 
 interface DropzoneFieldProps {
-  onSelectField: (file: string) => void
-  error: FieldError | undefined
-  value: string
+  onSelectField?: (file: string) => void
+  error?: FieldError | undefined
+  value?: string | undefined
 }
 
 const DropzoneField = ({ onSelectField, error, value }: DropzoneFieldProps) => {
@@ -19,9 +19,9 @@ const DropzoneField = ({ onSelectField, error, value }: DropzoneFieldProps) => {
       // Do something with the files
       if (!acceptedFiles || acceptedFiles.length == 0) return
       const file = acceptedFiles[0]
-      console.log(file.name)
 
-      onSelectField(file.name)
+
+      onSelectField?.(file.name)
     },
     [onSelectField]
   )
@@ -43,7 +43,7 @@ const DropzoneField = ({ onSelectField, error, value }: DropzoneFieldProps) => {
     >
       <Upload />
 
-      <Input value={value} {...getInputProps()} />
+      <Input value={value ?? ''} {...getInputProps()} />
       {/* {isDragActive ? (
         <p>Drop the files here ...</p>
       ) : (
