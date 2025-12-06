@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { EyeIcon, EyeOff } from 'lucide-react'
 import { toast } from 'react-toastify'
-import { useDispatch } from 'react-redux'
-import type { AppDispatch } from '../../store'
 
 // components
 import Button from '../../components/atoms/Button'
@@ -17,24 +15,19 @@ import {
 import { TextField } from '../../components/molecules/TextField'
 import Label from '../../components/atoms/Label'
 
-// types
-import type { IFormInput } from '../../types'
-
 // services
-import type { ApiResponse, AuthData, IUser } from '../../services'
-import { httpRequest } from '../../services/initRequest'
+import { post } from '../../services'
+import type { IUser } from '../../types'
 
 // configs
 import { PATH, REGEX_EMAIL } from '../../configs'
 import { setLocalStorage } from '../../utils/localStorage'
-
-import { setAuth, setLoading } from '../../redux/userSlice'
+//context
 import { useTheme } from '../../contexts/ThemeContext'
 
 const Login = () => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = React.useState<boolean>(false)
-  const dispatch = useDispatch<AppDispatch>()
   const { theme, toggleTheme } = useTheme()
 
   const {
@@ -42,22 +35,15 @@ const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm<IUser>()
-  const onSubmit = async (
-    dataInput: Omit<IUser, 'first_name' | 'last_name'>
-  ) => {
-    try {
-      const bodyData = {
-        data: {
-          ...dataInput,
-        },
-      }
-
-      const res = await httpRequest<ApiResponse<AuthData>>('api/user/signin', {
-        method: 'POST',
-        data: bodyData,
-      })
-
-      const { access_token, refresh_token } = res.data || {}
+  const onSubmit = async (dataInput: Pick<IUser, 'email' | 'password'>) => {
+    const bodyData = {
+      data: {
+        ...dataInput,
+      },
+    }
+    const res = await post('api/user/signin', bodyData)
+    const { isSuccess, msg, data } = res
+    if (isSuccess) {
       toast.success('Login successfully!', {
         position: 'top-right',
         autoClose: 2000,
@@ -67,12 +53,11 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       })
-      setLocalStorage('access_token', access_token)
-      setLocalStorage('refresh_token', refresh_token)
 
+      setLocalStorage('access_token', data?.access_token)
+      setLocalStorage('refresh_token', data?.refresh_token)
       navigate(PATH.DASHBOARD)
-    } catch (error: any) {
-      const { msg } = error?.response?.data || 'Login fail'
+    } else {
       toast.error(msg, {
         position: 'top-right',
         autoClose: 2000,
