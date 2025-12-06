@@ -40,7 +40,7 @@ export const initRequest = (store: AppStore) => {
       // Do something with response data
       console.log('response success', response)
       dispatch(setLoading(false))
-      return response.data
+      return response
     },
     async function onRejected(error) {
       // Any status codes that falls outside the range of 2xx cause this function to trigger
