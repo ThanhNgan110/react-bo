@@ -14,8 +14,15 @@ import { PATH } from './configs'
 import ProtectedRoute from './routes/ProtectedRoute'
 import AuthRoute from './routes/AuthRoute'
 import { Spinner } from './components/molecules/Spinner'
+import { RoleRoute } from './routes/RoleRoute'
 
 //pages
+const NotFound = React.lazy(() =>
+  import('./pages/Errors/NotFound').then((module) => ({
+    default: module.default,
+  }))
+)
+
 const Login = React.lazy(() =>
   import('./pages/Login').then((module) => ({ default: module.default }))
 )
@@ -71,6 +78,7 @@ function App() {
       component: Dashboard,
       guard: ProtectedRoute,
       template: Template,
+      requireRole: ['admin', 'operator'],
     },
     {
       path: PATH.LOGIN,
@@ -87,24 +95,32 @@ function App() {
       component: EmployeeList,
       guard: ProtectedRoute,
       template: Template,
+      requireRole: ['admin', 'operator'],
     },
     {
       path: PATH.EMPLOYEE_CREATE,
       component: EmployeeCreate,
       guard: ProtectedRoute,
       template: Template,
+      requireRole: ['admin', 'operator'],
     },
     {
       path: PATH.EMPLOYEE_EDIT,
       component: EmployeeEdit,
       guard: ProtectedRoute,
       template: Template,
+      requireRole: ['admin', 'operator'],
     },
     {
       path: PATH.EMPLOYEE_SHOW,
       component: EmployeeShow,
       guard: ProtectedRoute,
       template: Template,
+      requireRole: ['admin', 'operator'],
+    },
+    {
+      path: PATH.NOT_FOUND,
+      component: NotFound,
     },
   ]
 
@@ -125,13 +141,20 @@ function App() {
                 element={
                   <Guard>
                     <TemplateComp>
-                      <Component />
+                      {route?.requireRole ? (
+                        <RoleRoute requireRole={route.requireRole}>
+                          <Component />
+                        </RoleRoute>
+                      ) : (
+                        <Component />
+                      )}
                     </TemplateComp>
                   </Guard>
                 }
               />
             )
           })}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </React.Suspense>
     </>

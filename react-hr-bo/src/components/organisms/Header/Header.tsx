@@ -20,8 +20,7 @@ import { UserDropDown } from '../UserDropDown'
 const Header = () => {
   const [toggleSetting, setToggleSetting] = React.useState(false)
 
-  const { toggleSidebar, toggleMobileSidebar, isMobile, isMobileOpen } =
-    useSidebar()
+  const { toggleSidebar, toggleMobileSidebar, isMobile } = useSidebar()
   const { theme, toggleTheme } = useTheme()
 
   const handleToggleSetting = () => {
@@ -41,22 +40,19 @@ const Header = () => {
       <div
         className={`flex items-center w-full px-4 py-2 border-b  border-b-gray-200 dark:b dark:border-b-gray-800 md:border-none ${isMobile ? 'justify-between' : 'gap-3'}`}
       >
-        {isMobile ? (
+        {
           <Button
             onClick={handleToggle}
+            className={
+              isMobile
+                ? ''
+                : 'rounded-lg bg-white border border-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-700 p-2'
+            }
             type="button"
-            variant="none"
+            variant={isMobile ? 'none' : 'secondary'}
             icon={<NavigationIcon className="text-gray-500" />}
           />
-        ) : (
-          <Button
-            onClick={handleToggle}
-            className="rounded-lg bg-white border border-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-700 p-2"
-            type="button"
-            variant="secondary"
-            icon={<NavigationIcon className="text-gray-500" />}
-          />
-        )}
+        }
         {!isMobile && (
           <TextField
             className="w-[100px] md:w-[500px]"
@@ -89,9 +85,8 @@ const Header = () => {
         )}
       </div>
 
-      
       <div
-        className={`${toggleSetting ? 'hidden': 'flex'} items-center ${isMobile ? 'justify-between w-full' : 'md:gap-5'} px-4 py-2`}
+        className={`${toggleSetting ? 'hidden' : 'flex'} items-center ${isMobile ? 'justify-between w-full' : 'md:gap-5'} px-4 py-2`}
       >
         <div className="flex gap-3">
           <Button
