@@ -30,7 +30,11 @@ export const SidebarProvider = ({ children }: React.PropsWithChildren) => {
     const handleResize = () => {
       const mobile = window.innerWidth <= 768
       setIsMobile(mobile)
-      
+      if (mobile) {
+        setIsExpanded(false)
+        setIsMobileOpen(false)
+      }
+
       if (!mobile) {
         setIsMobile(false)
       }
@@ -41,23 +45,24 @@ export const SidebarProvider = ({ children }: React.PropsWithChildren) => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const toggleSidebar = () => setIsExpanded((prev)=> !prev)
+  const toggleSidebar = () => setIsExpanded((prev) => !prev)
   const toggleMobileSidebar = () => setIsMobileOpen((prev) => !prev)
+  
+  const value = React.useMemo(
+    () => ({
+      isExpanded: isMobile ? false : isExpanded,
+      isMobile,
+      isMobileOpen,
+      isHovered,
+      toggleSidebar,
+      toggleMobileSidebar,
+      setIsHovered,
+    }),
+    [isExpanded, isHovered, isMobile, isMobileOpen]
+  )
 
   return (
-    <SidebarContext.Provider
-      value={{
-        isExpanded: isMobile ? false: isExpanded,
-        isMobile,
-        isMobileOpen,
-        isHovered,
-        toggleSidebar,
-        toggleMobileSidebar,
-        setIsHovered,
-      }}
-    >
-      {children}
-    </SidebarContext.Provider>
+    <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
   )
 }
 

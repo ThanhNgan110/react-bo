@@ -13,7 +13,8 @@ import { MenuIcon, UserIcon } from '../../atoms/Icon'
 import Menu from '../../molecules/Menu'
 
 const Sidebar = () => {
-  const { isExpanded, isHovered, setIsHovered, isMobileOpen } = useSidebar()
+  const { isExpanded, isHovered, setIsHovered, isMobileOpen, isMobile } =
+    useSidebar()
 
   const navItems: IMenuItem[] = [
     {
@@ -37,29 +38,55 @@ const Sidebar = () => {
   return (
     <>
       <aside
-        className={`fixed mt-16 z-999 md:static md:mt-0 bg-white min-h-screen border-r-2 border-gray-200 px-5 transition-all duration-300 dark:border-gray-800 dark:bg-black lg:translate-x-0 ${
-          isExpanded || isHovered ? 'w-[290px]' : 'w-[90px]'
-        }${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`
+  fixed mt-16 z-100 md:static md:mt-0 bg-white min-h-screen
+  border-r-2 border-gray-200 px-5 transition-all duration-300
+  dark:border-gray-800 dark:bg-black lg:translate-x-0
+
+  ${
+    isMobile
+      ? isMobileOpen
+        ? 'translate-x-0 w-[290px]'
+        : '-translate-x-full w-[90px]'
+      : isExpanded || isHovered
+        ? 'translate-x-0 w-[290px]'
+        : 'translate-x-full w-[90px]'
+  }
+`}
         onMouseEnter={handleHovered(true)}
         onMouseLeave={handleHovered(false)}
       >
         <h1 className="flex gap-3 py-8 ">
           <a href="/">
-            {isExpanded || isHovered ? (
-              <img src="/assets/images/logo/logo.svg" alt="TailAdmin" />
-            ) : (
+            {isMobile ? (
               <img
-                className="ml-3"
-                src="/assets/images/logo/logo-icon.svg"
-                alt="TailAdmin"
+                src="/assets/images/logo/logo.svg"
+                alt="TailAdmin logo with stylized text TailAdmin in blue and green, set against a white background, conveying a modern and professional tone"
               />
+            ) : isExpanded || isHovered ? (
+              <img
+                src="/assets/images/logo/logo.svg"
+                alt="TailAdmin logo with stylized text TailAdmin in blue and green, set against a white background, conveying a modern and professional tone"
+              />
+            ) : (
+              ''
             )}
           </a>
         </h1>
 
         <nav className="mb-6">
           <h2 className="mb-5 text-gray-400 text-xs uppercase leading-1.5">
-            {isExpanded || isHovered ? 'Menu' : <Ellipsis className="ml-3" />}
+            {isMobile ? (
+              isMobileOpen ? (
+                'Menu'
+              ) : (
+                ''
+              )
+            ) : isExpanded || isHovered ? (
+              'Menu'
+            ) : (
+              <Ellipsis className="ml-3" />
+            )}
           </h2>
           <Menu
             mode="vertical"
@@ -78,7 +105,20 @@ const Sidebar = () => {
                   >
                     {data.icon}
                   </span>
-                  {isExpanded || isHovered ? (
+                  {isMobile ? (
+                    isMobileOpen ? (
+                      <p
+                        className="
+                        text-gray-700 text-sm font-medium dark:text-gray-400 
+                        group-hover:text-brand-500 dark:group-hover:text-white
+                      "
+                      >
+                        {data.name}
+                      </p>
+                    ) : (
+                      ''
+                    )
+                  ) : isExpanded || isHovered ? (
                     <p
                       className="
                         text-gray-700 text-sm font-medium dark:text-gray-400 

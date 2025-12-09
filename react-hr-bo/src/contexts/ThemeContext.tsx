@@ -17,12 +17,12 @@ export const ThemProvider = ({ children }: React.PropsWithChildren) => {
     (getLocalStorage('colorTheme') as Theme) || 'light'
   )
 
-  const toggleTheme = () => {
+  const toggleTheme = React.useCallback(() => {
     const colorTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(colorTheme)
     window.localStorage.clear()
     setLocalStorage('colorTheme', colorTheme)
-  }
+  }, [theme])
 
   React.useEffect(() => {
     const root = document.documentElement
@@ -31,11 +31,15 @@ export const ThemProvider = ({ children }: React.PropsWithChildren) => {
     root.classList.add(theme)
   }, [theme])
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+  const value = React.useMemo(
+    () => ({
+      theme,
+      toggleTheme,
+    }),
+    [theme, toggleTheme]
   )
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
