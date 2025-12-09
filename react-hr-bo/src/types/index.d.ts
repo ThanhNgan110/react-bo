@@ -12,13 +12,6 @@ export type TOption = {
   value: string
 }
 
-// export interface IUser {
-//   first_name: string
-//   last_name: string
-//   email: string
-//   password: string
-// }
-
 export interface IMember{
   _id: string
   avatar: string
@@ -55,7 +48,7 @@ export interface IUser {
   city: string
   country: string
   state: string
-  role: 'admin' | 'operator' | 'member'
+  role: string
   password: string
 }
 
