@@ -17,7 +17,7 @@ import Label from '../../components/atoms/Label'
 
 // services
 import { post } from '../../services'
-import type { IUser } from '../../types'
+import type { ApiResponse, AuthData, IUser } from '../../types'
 
 // configs
 import { PATH, REGEX_EMAIL } from '../../configs'
@@ -42,8 +42,9 @@ const Login = () => {
       },
     }
     const res = await post('api/user/signin', bodyData)
-    const { isSuccess, msg, data } = res
-    if (isSuccess) {
+    const { isSucess, msg, data } = (res as ApiResponse<AuthData>) || {}
+
+    if (isSucess) {
       toast.success('Login successfully!', {
         position: 'top-right',
         autoClose: 2000,
@@ -160,10 +161,6 @@ const Login = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        {/* <CheckboxField
-                          checked={isChecked}
-                          onChange={setIsChecked}
-                        /> */}
                         <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
                           Keep me logged in
                         </span>

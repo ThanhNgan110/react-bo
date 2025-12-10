@@ -16,7 +16,6 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
   baseClassName = 'rounded-lg text-sm text-gray-700  hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700',
   className = '',
   onClick,
-  onItemClick,
   children,
 }) => {
   const combinedClassName = `${baseClassName} ${className}`
@@ -28,7 +27,6 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
   }
 
   if (tag === 'a' && to) {
-    
     return (
       <Link className={combinedClassName} to={to} onClick={handleClick}>
         {children}
@@ -36,10 +34,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
     )
   }
   return (
-    <button
-      className={`cursor-pointer ${combinedClassName}`}
-      onClick={onClick}
-    >
+    <button className={`cursor-pointer ${combinedClassName}`} onClick={onClick}>
       {children}
     </button>
   )

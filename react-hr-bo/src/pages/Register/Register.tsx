@@ -12,15 +12,8 @@ import { Input } from '../../components/atoms/Input'
 
 //configs
 import { PATH, REGEX_EMAIL, REGEX_PASSWORD } from '../../configs'
-import { httpRequest } from '../../services/initRequest'
-import type { ApiResponse, IUser } from '../../services'
-
-interface IForm {
-  first_name: string
-  last_name: string
-  email: string
-  password: string
-}
+import type { IUser } from '../../types'
+import { post } from '../../services'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -28,42 +21,24 @@ const Register = () => {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<IForm>()
-  const onSubmit = async (dataInput: IForm) => {
-    try {
-      const bodyData = {
-        data: {
-          ...dataInput,
-          address: '140 le van sy',
-          city: 'HCM',
-          country: 'VN',
-          state: '14',
-          role: 'user',
-        },
-      }
+  } = useForm<IUser>()
+  const onSubmit = async (
+    dataInput: Pick<IUser, 'first_name' | 'last_name' | 'email' | 'password'>
+  ) => {
+    const bodyData = {
+      data: {
+        ...dataInput,
+      },
+    }
 
-      console.log('data', bodyData)
-      const res = await httpRequest<ApiResponse<IUser>>('api/user/signup', {
-        method: 'POST',
-        data: bodyData,
-      })
+    const res = await post('api/user/signup', {
+      method: 'POST',
+      data: bodyData,
+    })
 
-      const { isSucess } = res.data
-
-      if (!isSucess) {
-        toast.error('Register failed!', {
-          position: 'top-right',
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        })
-        return
-      }
-
-      toast.success('Register successfully!', {
+    const { isSuccess, msg } = res
+    if (isSuccess) {
+      toast.success(`${msg || 'Register successfully!'}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -73,10 +48,8 @@ const Register = () => {
         progress: undefined,
       })
       navigate(PATH.LOGIN)
-    } catch (error: any) {
-      const { msg } = error?.response?.data || 'Register fail'
-
-      toast.error(msg, {
+    } else {
+      toast.error(`${msg || 'Register fail!'}`, {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -287,5 +260,4 @@ const Register = () => {
     </div>
   )
 }
-
 export default Register
