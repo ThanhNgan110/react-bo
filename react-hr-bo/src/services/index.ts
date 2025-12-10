@@ -12,8 +12,8 @@ const getApi = async <T>(endPoint: string) => {
   }
 }
 
-const post = async <T>(endPoint: string, bodyData: T) => {
-  const res = await httpRequest.post<ApiResponse<T>>(endPoint, bodyData)
+const post = async <TResponse, Tbody>(endPoint: string, bodyData: Tbody) => {
+  const res = await httpRequest.post<ApiResponse<TResponse>>(endPoint, bodyData)
   const { isSucess, msg, data } = res.data
 
   return {

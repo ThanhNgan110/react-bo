@@ -17,7 +17,7 @@ import Label from '../../components/atoms/Label'
 
 // services
 import { post } from '../../services'
-import type { ApiResponse, AuthData, IUser } from '../../types'
+import type { AuthData, IUser } from '../../types'
 
 // configs
 import { PATH, REGEX_EMAIL } from '../../configs'
@@ -41,10 +41,14 @@ const Login = () => {
         ...dataInput,
       },
     }
-    const res = await post('api/user/signin', bodyData)
-    const { isSucess, msg, data } = (res as ApiResponse<AuthData>) || {}
+    const res = await post<AuthData, typeof bodyData>(
+      'api/user/signin',
+      bodyData
+    )
+    const { isSuccess, msg, data } = res || {}
+    const { access_token, refresh_token } = data || {}
 
-    if (isSucess) {
+    if (isSuccess) {
       toast.success('Login successfully!', {
         position: 'top-right',
         autoClose: 2000,
@@ -55,8 +59,8 @@ const Login = () => {
         progress: undefined,
       })
 
-      setLocalStorage('access_token', data?.access_token)
-      setLocalStorage('refresh_token', data?.refresh_token)
+      setLocalStorage('access_token', access_token)
+      setLocalStorage('refresh_token', refresh_token)
       navigate(PATH.DASHBOARD)
     } else {
       toast.error(msg, {
