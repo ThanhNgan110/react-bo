@@ -49,8 +49,3 @@ git checkout develop
 npm install
 # or
 yarn install
-
-4. Run development server
-npm run dev
-# or
-yarn dev
