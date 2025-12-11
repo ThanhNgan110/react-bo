@@ -37,16 +37,20 @@ This repository for building a **HR Dashboard** with best practices:
 
 ---
 
-## 🚀 Quickstart
+🚀 Quickstart
+1. Clone repository
+git clone https://github.com/ThanhNgan110/react-bo.git
+cd react-hr-bo
 
-# 1. Clone repository
-git clone https://github.com/ThanhNgan110/react-bo
-cd <your-project-folder>
-
-# 2. Switch to develop branch
+2. Switch to develop branch
 git checkout develop
 
-# 3. Install dependencies
+3. Install dependencies
 npm install
 # or
 yarn install
+
+4. Run development server
+npm run dev
+# or
+yarn dev
