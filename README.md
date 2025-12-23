@@ -6,19 +6,19 @@ It implements modern patterns for authentication, routing, state management, err
 
 ## 📖 Overview
 
-This repository provides a skeleton for building a **HR Dashboard** with best practices:  
+This repository for building a **HR Dashboard** with best practices:  
 
 - Authentication with access & refresh tokens  
-- Role-based routes  
+- Role based access control(RBAC) define roles and assigning permisions to those role and handle logic show Ui by user role
 - Axios interceptor for token refresh  
 - Redux Toolkit for state  
-- Dynamic layouts (Auth vs Dashboard)  
-- Lazy loading (React Suspense)  
-- Error boundaries  
-- Forms with validation + toast notifications  
-- Charts using **ApexCharts**  
-- Example CRUD modules: **Employees** & **Invoices**  
-
+- Dynamic layouts  
+- Forms with validation with react hook form + toast notifications  
+- Charts using **ApexCharts**  for show member by team
+- Responsive screen on devices
+- Example CRUD: Login, Register, and modules Employee
+- Optimate performance use hooks: useMemo, memo, useCallBack
+- Code splitting, lazy load module, suspense
 ---
 
 ## ✨ Features
@@ -29,24 +29,23 @@ This repository provides a skeleton for building a **HR Dashboard** with best pr
 - **ProtectedRoute**: restricts pages to logged-in users  
 - **AuthRoute**: prevents logged-in users from re-visiting login/register  
 - **Axios interceptor**: queues failed requests, retries after refresh  
-- **Redux Toolkit**: slices for auth, employees, invoices  
-- **Employees Module**: list, search, detail, edit, create  
-- **Invoices Module**: list, create  
-- **Charts**: integrated example using `react-apexcharts`  
-- **Layouts**: `AuthLayout` (login/register) & `DashboardLayout` (main app)  
-- **Error boundary**: catches runtime errors in React tree  
+- **Redux Toolkit**: slice for user,
+- **Employees Module**: creat, list, update, edit for role admin, operator
+- **Charts**:display members pie chart by teams
+- **Layouts**: `AuthLayout` (login/register) & `DashboardLayout` (main app)
+- Optimate performance hook use useMemo, memo, useCallBack
 
 ---
 
-## 🚀 Quickstart
+🚀 Quickstart
+1. Clone repository
+git clone https://github.com/ThanhNgan110/react-bo.git
+cd react-hr-bo
 
-```bash
-# Install dependencies
+2. Switch to develop branch
+git checkout develop
+
+3. Install dependencies
 npm install
 # or
 yarn install
-
-# Start dev server
-npm run dev
-# or
-yarn dev
