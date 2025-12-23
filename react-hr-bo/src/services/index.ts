@@ -1,5 +1,6 @@
 import { httpRequest } from './initRequest'
 import type { ApiResponse } from '../types'
+import axios from 'axios'
 
 const getApi = async <T>(endPoint: string) => {
   const res = await httpRequest.get<ApiResponse<T>>(endPoint)
@@ -12,25 +13,46 @@ const getApi = async <T>(endPoint: string) => {
   }
 }
 
-const post = async <TResponse, Tbody>(endPoint: string, bodyData: Tbody) => {
-  const res = await httpRequest.post<ApiResponse<TResponse>>(endPoint, bodyData)
-  const { isSucess, msg, data } = res.data
+const post = async <TResponse, TBody>(endPoint: string, bodyData: TBody) => {
+  try {
+    const { data } = await httpRequest.post<ApiResponse<TResponse>>(
+      endPoint,
+      bodyData
+    )
 
-  return {
-    msg: msg ?? '',
-    data: data ?? null,
-    isSuccess: isSucess ?? false,
+    return {
+      msg: data.msg ?? '',
+      data: data.data ?? null,
+      isSuccess: data.isSucess ?? false,
+    }
+  } catch (error) {
+    const msg = axios.isAxiosError(error) ? error.response?.data?.msg : null
+
+    return {
+      msg: msg ?? 'Something went wrong',
+      data: null,
+      isSuccess: false,
+    }
   }
 }
 
 const put = async <T>(endPoint: string, bodyData: T) => {
-  const res = await httpRequest.post<ApiResponse<T>>(endPoint, bodyData)
-  const { isSucess, msg, data } = res.data
+  try {
+    const res = await httpRequest.put<ApiResponse<T>>(endPoint, bodyData)
+    const { isSucess, msg, data } = res.data
 
-  return {
-    msg: msg?? '',
-    data: data ?? null,
-    isSuccess: isSucess ?? false,
+    return {
+      msg: msg ?? '',
+      data: data ?? null,
+      isSuccess: isSucess ?? false,
+    }
+  } catch (error) {
+    const msg = axios.isAxiosError(error) ? error.response?.data : null
+    return {
+      msg: msg ?? 'Something went wrong',
+      data: null,
+      isSuccess: false,
+    }
   }
 }
 

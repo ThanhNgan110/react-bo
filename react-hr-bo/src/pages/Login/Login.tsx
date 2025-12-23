@@ -41,11 +41,12 @@ const Login = () => {
         ...dataInput,
       },
     }
-    const res = await post<AuthData, typeof bodyData>(
+    const res = await post<AuthData | '', typeof bodyData>(
       'api/user/signin',
       bodyData
     )
     const { isSuccess, msg, data } = res || {}
+
     const { access_token, refresh_token } = data || {}
 
     if (isSuccess) {

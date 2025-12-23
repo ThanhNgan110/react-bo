@@ -33,7 +33,7 @@ const EmployeeEdit = () => {
     reset,
     formState: { errors, isSubmitSuccessful },
     handleSubmit,
-  } = useForm<IMember>({
+  } = useForm<Omit<IMember, 'id'>>({
     defaultValues: {
       avatar: '',
       firstName: '',
@@ -77,7 +77,9 @@ const EmployeeEdit = () => {
     }
   }, [isSubmitSuccessful, reset])
 
-  const onSubmit = async (data: IMember) => {
+  const onSubmit = async (data: Omit<IMember, 'id'>) => {
+    console.log('data', data)
+
     const bodyData = {
       data: {
         ...data,
@@ -88,7 +90,9 @@ const EmployeeEdit = () => {
     const { isSuccess, msg } = res || {}
 
     if (isSuccess) {
-      toast.success('Add new member success ', {
+      console.log('a')
+
+      toast.success('Update member success ', {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,

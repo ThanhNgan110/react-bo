@@ -1,11 +1,12 @@
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { MoonIcon } from 'lucide-react'
+import { EyeIcon, EyeOff, MoonIcon } from 'lucide-react'
 
 // components
 import Button from '../../components/atoms/Button'
-import { EyeOutlinedIcon, GoogleIcon, XIcon } from '../../components/atoms/Icon'
+import { DarkIcon, GoogleIcon, XIcon } from '../../components/atoms/Icon'
 import { TextField } from '../../components/molecules/TextField'
 import Label from '../../components/atoms/Label'
 import { Input } from '../../components/atoms/Input'
@@ -14,29 +15,34 @@ import { Input } from '../../components/atoms/Input'
 import { PATH, REGEX_EMAIL, REGEX_PASSWORD } from '../../configs'
 import type { IUser } from '../../types'
 import { post } from '../../services'
+import { useTheme } from '../../contexts/ThemeContext'
 
 const Register = () => {
   const navigate = useNavigate()
+  const [showPassword, setShowPassword] = React.useState<boolean>(false)
+  const { theme, toggleTheme } = useTheme()
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<IUser>()
-  const onSubmit = async (
-    dataInput: Pick<IUser, 'first_name' | 'last_name' | 'email' | 'password'>
-  ) => {
+  const onSubmit = async (dataInput: IUser) => {
     const bodyData = {
       data: {
         ...dataInput,
+        address: '140 le van sy',
+        city: 'HCM',
+        country: 'VN',
+        state: '14',
+        role: 'admin',
       },
     }
 
-    const res = await post('api/user/signup', {
-      method: 'POST',
-      data: bodyData,
-    })
+    const res = await post<'', typeof bodyData>('api/user/signup', bodyData)
 
     const { isSuccess, msg } = res
+    console.log('res', res)
+
     if (isSuccess) {
       toast.success(`${msg || 'Register successfully!'}`, {
         position: 'top-right',
@@ -159,14 +165,8 @@ const Register = () => {
                       </Label>
                       <div className="relative">
                         <TextField
-                          aria-invalid={errors.password ? 'true' : 'false'}
-                          type="text"
+                          type={showPassword ? 'text' : 'password'}
                           placeholder="Enter your password"
-                          suffixElement=<EyeOutlinedIcon
-                            className="cursor-pointer text-gray-500"
-                            width={'1em'}
-                            height={'1em'}
-                          />
                           {...register('password', {
                             required: 'Password is required',
                             pattern: {
@@ -175,16 +175,17 @@ const Register = () => {
                             },
                           })}
                           error={errors.password}
+                          aria-invalid={errors.password ? 'true' : 'false'}
                         />
                         <span
-                          // onClick={() => setShowPassword(!showPassword)}
-                          className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute top-7 z-30 -translate-y-1/2 cursor-pointer right-4"
                         >
-                          {/* {showPassword ? (
-                            <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                          {showPassword ? (
+                            <EyeIcon className=" text-gray-400  size-5" />
                           ) : (
-                            <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                          )} */}
+                            <EyeOff className="text-gray-400 size-5" />
+                          )}
                         </span>
                       </div>
                     </div>
@@ -253,7 +254,19 @@ const Register = () => {
             </div>
           </div>
           <div className="absolute bottom-10 right-12 bg-brand-500 rounded-full flex items-center justify-center w-15 h-15 cursor-pointer hover:bg-brand-700">
-            <MoonIcon className=" text-gray-100  " />
+            <Button
+              onClick={toggleTheme}
+              className="w-15 h-15 flex items-center justify-center bg-brand-500 hover:bg-brand-600 border-none rounded-full w-11 h-11  p-2"
+              type="button"
+              variant="none"
+              icon={
+                theme === 'light' ? (
+                  <MoonIcon className="text-gray-200" />
+                ) : (
+                  <DarkIcon className="text-gray-200" />
+                )
+              }
+            />
           </div>
         </div>
       </div>
