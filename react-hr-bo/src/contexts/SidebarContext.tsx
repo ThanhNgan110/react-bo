@@ -5,9 +5,11 @@ interface SidebarContextProps {
   isMobile: boolean
   isMobileOpen: boolean
   isHovered: boolean
+  isActived:boolean
   toggleSidebar: () => void
   toggleMobileSidebar: () => void
   setIsHovered: (isHovered: boolean) => void
+  toggleActive: () => void
 }
 
 const SidebarContext = React.createContext<SidebarContextProps>({
@@ -15,9 +17,11 @@ const SidebarContext = React.createContext<SidebarContextProps>({
   isMobile: false,
   isMobileOpen: false,
   isHovered: false,
+  isActived: false,
   toggleSidebar: () => {},
   toggleMobileSidebar: () => {},
   setIsHovered: () => {},
+  toggleActive: () => {},
 })
 
 export const SidebarProvider = ({ children }: React.PropsWithChildren) => {
@@ -25,6 +29,7 @@ export const SidebarProvider = ({ children }: React.PropsWithChildren) => {
   const [isMobile, setIsMobile] = React.useState(false)
   const [isMobileOpen, setIsMobileOpen] = React.useState(false)
   const [isHovered, setIsHovered] = React.useState(false)
+  const [isActived, setIsActived] = React.useState(false)
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -47,18 +52,21 @@ export const SidebarProvider = ({ children }: React.PropsWithChildren) => {
 
   const toggleSidebar = () => setIsExpanded((prev) => !prev)
   const toggleMobileSidebar = () => setIsMobileOpen((prev) => !prev)
-  
+  const toggleActive = () =>  setIsActived(true)
+
   const value = React.useMemo(
     () => ({
       isExpanded: isMobile ? false : isExpanded,
       isMobile,
       isMobileOpen,
       isHovered,
+      isActived,
       toggleSidebar,
       toggleMobileSidebar,
       setIsHovered,
+      toggleActive
     }),
-    [isExpanded, isHovered, isMobile, isMobileOpen]
+    [isExpanded, isHovered, isMobile, isMobileOpen, isActived]
   )
 
   return (

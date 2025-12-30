@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { PATH } from '../../../configs'
 import { Ellipsis } from 'lucide-react'
 
@@ -13,8 +13,15 @@ import { MenuIcon, UserIcon } from '../../atoms/Icon'
 import Menu from '../../molecules/Menu'
 
 const Sidebar = () => {
-  const { isExpanded, isHovered, setIsHovered, isMobileOpen, isMobile } =
-    useSidebar()
+  const {
+    isExpanded,
+    isHovered,
+    setIsHovered,
+    isMobileOpen,
+    isMobile,
+    isActived,
+  } = useSidebar()
+  const location = useLocation()
 
   const navItems: IMenuItem[] = [
     {
@@ -92,7 +99,13 @@ const Sidebar = () => {
             mode="vertical"
             menus={navItems}
             renderMenuItem={(data: IMenuItem) => (
-              <li>
+              <li
+                className={
+                  location.pathname === data.path
+                    ? 'bg-brand-50 text-brand-500 rounded-lg'
+                    : 'hover:bg-brand-100 rounded-lg'
+                }
+              >
                 <Link
                   className="group flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 active:bg-brand-50 dark:text-gray-300 dark:hover:bg-gray-700"
                   to={data.path}
